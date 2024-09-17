@@ -1,0 +1,92 @@
+﻿@* @model IEnumerable<ECommerceMVC.ViewModels.HangHoaVM> *@
+@model PagedList.IPagedList<ECommerceMVC.ViewModels.HangHoaVM>
+@using PagedList.Mvc
+@{
+	ViewData["Title"] = "Index";
+	Layout = "_DanhSachHangHoa";
+}
+<style>
+    .pagination {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .page-item {
+        margin: 0 5px; /* Khoảng cách giữa các phần tử */
+    }
+
+    .page-link {
+        padding: 5px 10px;
+        border: 1px solid #ddd;
+        background-color: #f5f5f5;
+        color: #333;
+        text-decoration: none;
+    }
+
+        .page-link:hover {
+            background-color: #e9e9e9;
+        }
+
+    .page-item.active .page-link {
+        background-color: #007bff;
+        color: #fff;
+        border-color: #007bff;
+    }
+
+    .page-item.disabled .page-link {
+        pointer-events: none;
+        cursor: not-allowed;
+    }
+
+</style>
+<!-- Single Page Header start -->
+@section BreadCum {
+	<div class="container-fluid page-header py-5">
+		<h1 class="text-center text-white display-6">Shop</h1>
+		<ol class="breadcrumb justify-content-center mb-0">
+			<li class="breadcrumb-item"><a href="#">Home</a></li>
+			<li class="breadcrumb-item"><a href="#">Pages</a></li>
+			<li class="breadcrumb-item active text-white">Shop</li>
+		</ol>
+	</div>
+}
+<!-- Single Page Header End -->
+
+@await Html.PartialAsync("ProductItem", Model)
+
+	<!-- Phân trang -->
+<!-- Phân trang -->
+<div class="pagination justify-content-center">
+    @if (Model.HasPreviousPage)
+    {
+        <div class="page-item">
+            <a class="page-link" asp-action="Index" asp-route-page="@(Model.PageNumber - 1)" asp-route-loai="@ViewData["TenLoai"]" >Trước</a>
+        </div>
+    }
+    else
+    {
+        <div class="page-item disabled">
+            <a class="page-link">Trước</a>
+        </div>
+    }
+    @for (int i = 1; i <= Model.PageCount; i++)
+    {
+        <div class="page-item @(i == Model.PageNumber ? "active" : "")">
+            <a class="page-link" asp-action="Index" asp-route-page="@i" asp-route-loai="@ViewData["TenLoai"]" >@i</a>
+        </div>
+    }
+    @if (Model.HasNextPage)
+    {
+        <div class="page-item">
+            <a class="page-link" asp-action="Index" asp-route-page="@(Model.PageNumber + 1)" asp-route-loai="@ViewData["TenLoai"]" >Sau</a>
+        </div>
+    }
+    else
+    {
+        <div class="page-item disabled">
+            <a class="page-link">Sau</a>
+        </div>
+    }
+</div>
+
